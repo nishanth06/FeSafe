@@ -3,11 +3,14 @@ package com.example.dibyadarshan.fesafe;
 
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -17,6 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         int PERMISSION_REQUEST_CODE = 1;
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             if (checkSelfPermission(Manifest.permission.SEND_SMS)
                     == PackageManager.PERMISSION_DENIED) {
@@ -40,18 +46,42 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
+
+                                  @Override
+                                  public void run() {
+
+                                      Intent temp = new Intent();
+                                      PendingIntent pIntent = PendingIntent.getActivity(MainActivity.this,0,temp,0);
+                                      Notification noti = new Notification.Builder(MainActivity.this)
+                                              .setTicker("Ticker")
+                                              .setContentTitle("C title")
+                                              .setContentText("ds")
+                                              .setSmallIcon(R.drawable.ic_launcher_background)
+                                              .addAction(R.drawable.ic_launcher_background," ",pIntent)
+                                              .setContentIntent(pIntent).getNotification();
+                                      noti.flags= Notification.FLAG_AUTO_CANCEL;
+                                      NotificationManager nm=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                      nm.notify(0,noti);
+                                  }
+
+                              },
+                0,
+                1000);
         Button one = (Button)this.findViewById(R.id.button1);
         final MediaPlayer mp = MediaPlayer.create(this, R.raw.sound);
         one.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                SmsManager smsManager =     SmsManager.getDefault();
-                smsManager.sendTextMessage("+919886594337", null, "Help!", null, null);
+                //SmsManager smsManager =     SmsManager.getDefault();
+                //smsManager.sendTextMessage("+919886594337", null, "Help!", null, null);
                 if(mp.isPlaying()){
                     mp.pause();
                 }
                 else{
                     mp.start();
                 }
+
             }
         });
     }
