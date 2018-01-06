@@ -1,7 +1,6 @@
 package com.example.dibyadarshan.fesafe;
 
 
-
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,15 +10,11 @@ import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -89,6 +84,14 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(getApplicationContext(),svg.class);
         startActivity(intent);
+    }
+
+    public void findPoliceStations(View v){
+
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=police stations near me");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
 }

@@ -16,6 +16,12 @@
         android:id="@+id/button1"
         android:text="SOS"/>
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/policeStation"
+        android:text="LOCATE POLICE STATION"
+        android:onClick="findPoliceStations"/>
+    <Button
         android:onClick="buttonClickFunction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
